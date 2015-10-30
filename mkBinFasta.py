@@ -27,11 +27,11 @@ with open(sys.argv[1], "rU") as clusterfile, open(sys.argv[2], "rU") as contigfa
     for cluster in clusters:
         thebin = cluster.split(",")[1]
         thecontig = cluster.split(",")[0]
-        if not bindict.has_key(thebin):
-            contiglist = list(thecontig)
-        else:
+        if bindict.has_key(thebin):
             contiglist = bindict[thebin]
             contiglist.append(thecontig)
+        else:
+            contiglist = list(thecontig)
         bindict[thebin] = contiglist
 
 ### for each bin in the dictionary, we loop through the sequences in contigfasta and add the sequence to the output file, if it belongs to the bin
