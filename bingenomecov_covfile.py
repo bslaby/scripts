@@ -25,8 +25,8 @@ with open(sys.argv[2], "rU") as covfile: # covfile is the input table used for t
     for line in covfile:
         if not line.startswith("#"):
             header, no1, no2, no3, no4, no5, no6 = line.strip().split('\t', 7) # adapt this line for the number of coverage values in the table
-            contiglen = header.split('_')[3]
-            if not int(contiglen)<1001:
+            contiglen = header.split('_')[3] # adapt this line for whatever source you have for the contig length (here: SPAdes headers)
+            if not int(contiglen)<1001: # adapt this line for whatever length threshold you used during binning (1000 is default for CONCOCT)
                 cov = float(no1)+float(no2)+float(no3)+float(no4)+float(no5)+float(no6) # and also this line summing up those values
                 binno = bindict[header]
                 sumdict[binno] = sumdict.get(binno, 0) + cov
