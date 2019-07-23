@@ -1,18 +1,21 @@
 #!/usr/bin/python
 
-### This script takes the output of samtools depth of a mapping of reads to an assembly and calculates the mean coverage for each contig.
+### This script takes the output of samtools depth of a mapping of reads to an assembly, calculates the mean coverage for each contig and merges these output files to a coverage table.
 ### samtoolsout is the output of samtools depth
-### beate.slaby@uni-wuerzburg.de
+### bslaby@geomar.de
 
 import sys, os, csv
 
 def usage():
-    print "Usage: avgcov_from_samtoolsout.py samtoolsout assemblyfile"
-    print "samtoolsout is the output of 'samtools depth'"
+    print("Usage: avgcov_from_samtoolsout.py samtoolsout assemblyfile outdir")
+    print("samtoolsout is the output of 'samtools depth'")
+    print("outdir is the output directory")
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     usage()
     exit()
+
+outdir = sys.argv[3]
 
 with open(sys.argv[1], "rU") as samtoolsout, open(sys.argv[2], "rU") as assemblyfile:
     contiglist = []
@@ -38,10 +41,51 @@ with open(sys.argv[1], "rU") as samtoolsout, open(sys.argv[2], "rU") as assembly
         
 ### looping through the contigs in sumdict, the mean coverage per contig is calculated and written to standard output
 filename = sys.argv[1].split(".txt")[0]
-with open("coveragefile.csv", "wb") as csvfile:
+with open(outdir+"/"+filename+"_cov.csv", "wb") as csvfile:
     fp = csv.writer(csvfile, delimiter="\t")
     fp.writerow(["contig","mean.coverage"])
     for contig in contiglist:
         if readcountdict[contig] != 0:
             thevalue = float(sumdict[contig])/float(readcountdict[contig])
             fp.writerow([contig,thevalue])
+
+superdict = {}
+### reading all input files and making dictionaries
+for xfile in os.listdir(outdir):
+  with open(outdir+"/"+xfile, "rU") as thefile:
+    name = xfile.split(".")[0]
+    thedict = {}
+    for line in thefile:
+      if line.startswith("contig"):
+        pass
+      else:
+        contig, cov = line.strip().split("\t", 2)
+        thedict[contig] = cov    
+    superdict[name] = thedict
+#print(superdict)
+
+with open("combined_coverage.csv", "wb") as csvfile:
+  fp = csv.writer(csvfile, delimiter="\t")
+  namelist = []
+  outsuperdict = {}
+  for name in superdict:
+    namelist.append(name)
+    thedict = superdict[name]
+    for contig in thedict:
+      cov = thedict[contig]
+      if contig in outsuperdict:
+        outdict = outsuperdict[contig]
+      else:
+        outdict = {}
+      outdict[name] = cov
+      outsuperdict[contig] = outdict
+#  print(outsuperdict)
+  fp.writerow(namelist)
+  for contig in contiglist:
+    outdict = outsuperdict[contig]
+    outlist = []
+    for name in namelist:
+      cov = outdict[name]
+      outlist.append(cov)
+    fp.writerow(["\t".join(outlist),contig])
+os.system("sed 's/\"//g' -i combined_coverage.csv") # to get rid of '"' in the output table
