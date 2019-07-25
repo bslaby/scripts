@@ -31,7 +31,7 @@ if not os.path.isdir(outdir):
 
 ### making a list of all contigs in the assembly
 contiglist = []
-with open(assemblyfile, "rU") as assembly:
+with open(assemblyfile, "r") as assembly:
   for line in assembly:
     if line.startswith(">"):
       contig = line.strip().split(">")[1]
@@ -40,7 +40,7 @@ with open(assemblyfile, "rU") as assembly:
 superdict = {}
 for depthfile in os.listdir(depthfiles):
   filename = depthfile.split("_depth.txt")[0]
-  with open(depthfiles+"/"+depthfile, "rU") as samtoolsout:
+  with open(depthfiles+"/"+depthfile, "r") as samtoolsout:
     sumdict = {} # a dictionary adding up the per-base coverages for each contig
     readcountdict = {} # a dictionary counting the bases for each contig
 ### summing up coverage values and number of bases for each contig to calculate mean
