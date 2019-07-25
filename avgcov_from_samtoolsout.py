@@ -34,7 +34,7 @@ contiglist = []
 with open(assemblyfile, "rU") as assembly:
   for line in assembly:
     if line.startswith(">"):
-      contig = line.split(">")[1].split("\n")[0]
+      contig = line.strip().split(">")[1]
       contiglist.append(contig)
 
 superdict = {}
@@ -45,7 +45,7 @@ for depthfile in os.listdir(depthfiles):
     readcountdict = {} # a dictionary counting the bases for each contig
 ### summing up coverage values and number of bases for each contig to calculate mean
     for line in samtoolsout:
-      contigname, _, coverage = line.split('\t', 3)      
+      contigname, _, coverage = line.split("\t", 3)      
       sumdict[contigname] = sumdict.get(contigname, 0) + int(coverage)
       readcountdict[contigname] = readcountdict.get(contigname, 0) + 1
 ### adding zero count for contigs that are not covered by this read set
