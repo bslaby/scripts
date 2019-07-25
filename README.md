@@ -2,8 +2,13 @@
 A collection of free-to-use scripts
 
 # avgcov_from_samtoolsout.py
-This script takes the output of samtools depth of a mapping of reads to an assembly and calculates the mean coverage for each contig.
-samtoolsout is the output of samtools depth
+This script takes the output of samtools depth of a mapping of reads to an assembly, calculates the mean coverage for each contig and merges these output files to a coverage table.
+
+Usage: avgcov_from_samtoolsout.py depthfiles assemblyfile outdir covtable
+depthfiles: a directory containing the samtools depth output files for all samples named SAMPLENAME_depth.txt
+assemblyfile: the (meta)genomic assembly to which the reads were mapped
+outdir: name of the output directory
+covtable: name of the output coverage table
 
 # mkBinFasta.py
 This script takes the comma-separated output table of a binning tool ["contigname,binname", e.g. concoct (https://github.com/BinPro/CONCOCT, http://www.nature.com/nmeth/journal/v11/n11/full/nmeth.3103.html)] and the binned assembly fasta and creates a fasta file and a list of contigs for each bin.
