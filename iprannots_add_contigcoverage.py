@@ -34,15 +34,21 @@ with open(covtable, "r") as coverages:
       covlist = line.strip().split("\t")
       covdict[contig] = covlist
 
+### going through the annotations, adding the respective coverages and writing to output
 with open(iprannots, "r") as annots, open(outfile, "wb") as csvfile:
   headerannots = annots.readline().strip().split("\t")
+  headerlen = len(headerannots)
   headers = headerannots+headercovs
   out = csv.writer(csvfile, delimiter="\t")
-  out.writerow(headers)
+  out.writerow(headers) # writing the header line
   for line in annots:
     if line.startswith("c_00"):
       contig = "c_"+line.split("_")[1]
       covlist = covdict[contig]
       annotlist = line.strip().split("\t")
+      if len(annotlist)<headerlen: # accounting for lines that are missing annotations
+        diff = headerlen-len(annotlist)
+        for i in range(diff):
+          annotlist.append("NA")
       outlist = annotlist+covlist
       out.writerow(outlist)
