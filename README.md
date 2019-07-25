@@ -10,6 +10,15 @@ assemblyfile: the (meta)genomic assembly to which the reads were mapped
 outdir: name of the output directory
 covtable: name of the output coverage table
 
+# iprannots_add_contigcoverage.py
+This script takes an InterPro annotation table (tsv) and adds contig coverage information.
+The coverage information is the output table of the script avgcov_from_samtoolsout.py.
+
+Usage: iprannots_add_contigcoverage.py covtable iprannots outfile
+covtable: the output table of the script avgcov_from_samtoolsout.py, first line is header
+iprannots: InterPro annotation table in tsv format, first line is header
+outfile: name of the output file
+
 # mkBinFasta.py
 This script takes the comma-separated output table of a binning tool ["contigname,binname", e.g. concoct (https://github.com/BinPro/CONCOCT, http://www.nature.com/nmeth/journal/v11/n11/full/nmeth.3103.html)] and the binned assembly fasta and creates a fasta file and a list of contigs for each bin.
 clusterfile is the comma-separated binning output table, contigfasta is the assembly fasta that was used for binning
