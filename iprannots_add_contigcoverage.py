@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
 ### This script takes an InterPro annotation table (tsv) and adds contig coverage information.
-### The coverage information is the output table of the script avgcov_from_samtoolsout.py.
+### The coverage information is the output table of the script avgcov_from_samtoolsout.py - actually, any kind of additional contig-level information can be added using this script.
 ### contact: bslaby@geomar.de
 
 import sys, os, csv
 
 def usage():
   print("Usage: iprannots_add_contigcoverage.py covtable iprannots outfile")
-  print("covtable: the output table of the script avgcov_from_samtoolsout.py, first line is header")
+  print("covtable: the output table of the script avgcov_from_samtoolsout.py, first line is header - actually, any kind of additional contig-level information can be added")
   print("iprannots: InterPro annotation table in tsv format, first line is header")
   print("outfile: name of the output file")
 
