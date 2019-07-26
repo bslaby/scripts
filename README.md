@@ -11,7 +11,7 @@ outdir: name of the output directory
 covtable: name of the output coverage table
 
 # iprannots_add_contigcoverage.py
-This script takes an InterPro annotation table (tsv) and adds contig coverage information.
+This script takes an InterPro annotation table (tsv) and adds contig coverage information - actually, any kind of additional contig-level information can be added.
 The coverage information is the output table of the script avgcov_from_samtoolsout.py.
 
 Usage: iprannots_add_contigcoverage.py covtable iprannots outfile
